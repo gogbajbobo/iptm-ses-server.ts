@@ -1,10 +1,13 @@
 {
     "env": { "es6": true },
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "plugins": ["fp"],
+    "plugins": ["fp", "@typescript-eslint"],
+    "extends": ["plugin:@typescript-eslint/recommended"],
     "rules": {
+//        "@typescript-eslint/rule-name": "warn",
         "quotes": ["error", "single", { "allowTemplateLiterals": true }],
         "max-lines": ["warn", 200],
         "max-lines-per-function": ["warn", 30],
