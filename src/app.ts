@@ -1,7 +1,9 @@
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
+import { Request, Response } from 'express'
 
 import express from 'express'
+import { AppRoutes, Route } from './routes'
 
 
 createConnection()
@@ -11,18 +13,15 @@ createConnection()
 
         const app = express()
         const PORT = 8000
-        app.get(
-            '/',
-            (req, res) => {
-                return res.send('Express + TypeScript Server new')
-            }
-        )
-        app.get(
-            '/v',
-            (req, res) => {
-                return res.send('1.0.0')
-            }
-        )
+
+        AppRoutes.forEach((route: Route) => {
+            app[route.method](route.path, (req: Request, res: Response, next) => {
+                route.action(req, res)
+                    .then(() => next)
+                    .catch(err => next(err));
+            })
+        })
+
         app.listen(PORT, () => {
             console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`)
         })
