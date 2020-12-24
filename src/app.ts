@@ -5,15 +5,20 @@ import { Request, Response } from 'express'
 import express from 'express'
 import { AppRoutes, Route } from './routes'
 
-console.log(`app start in ${ process.env.NODE_ENV } environment`)
+import { log, requestLogger } from './services/logger'
+
+
+log.info(`app start in ${ process.env.NODE_ENV } environment`)
 
 createConnection()
     .then(async connection => {
 
-        console.log(`database connected at ${ new Date() }: ${ connection.name }`)
+        log.info(`database connected at ${ new Date() }: ${ connection.name }`)
 
         const app = express()
         const PORT = 8000
+
+        app.use(requestLogger)
 
         AppRoutes.forEach((route: Route) => {
             app[route.method](route.path, (req: Request, res: Response, next) => {
@@ -24,8 +29,8 @@ createConnection()
         })
 
         app.listen(PORT, () => {
-            console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`)
+            log.info(`⚡️[server]: Server is running at https://localhost:${PORT}`)
         })
 
     })
-    .catch(error => console.log('TypeORM connection error: ', error));
+    .catch(error => log.error('TypeORM connection error: ', error));
