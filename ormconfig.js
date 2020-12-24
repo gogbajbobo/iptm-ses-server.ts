@@ -6,9 +6,8 @@ const basePath =
             ? 'src'
             : null
 
-if (!basePath) console.warn(`You should set either 'production' or 'development' NODE_ENV value`)
-
-console.log(`basePath: ${ basePath }`)
+// eslint-disable-next-line no-console
+if (!basePath) console.error(`You should set either 'production' or 'development' NODE_ENV value`)
 
 module.exports = {
     type: 'mysql',
