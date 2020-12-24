@@ -18,6 +18,8 @@ module.exports = {
     database: 'iptm_ses',
     synchronize: true,
     dropSchema: false,
+    logging: [ 'error' ],
+    maxQueryExecutionTime: 1000,
     entities: [ `${ basePath }/entity/*.{js,ts}` ],
     subscribers: [ `${ basePath }/subscriber/*.{js,ts}` ],
     migrations: [ `${ basePath }/migration/*.{js,ts}` ],
