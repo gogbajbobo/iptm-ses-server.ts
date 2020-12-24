@@ -12,11 +12,14 @@ export const startServer = (): void => {
 
     AppRoutes.forEach((route: Route) => {
 
-        app[route.method](route.path, (req: Request, res: Response, next) => {
-            route.action(req, res)
-                .then(() => next)
-                .catch(err => next(err));
+        const { method, action, path } = route
+
+        app[method](path, (req: Request, res: Response, next) => {
+            action(req, res)
+                .then(next)
+                .catch(next)
         })
+
     })
 
     app.listen(PORT, () => {
