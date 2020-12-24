@@ -5,6 +5,7 @@ import { Request, Response } from 'express'
 import express from 'express'
 import { AppRoutes, Route } from './routes'
 
+console.log(`app start in ${ process.env.NODE_ENV } environment`)
 
 createConnection()
     .then(async connection => {
