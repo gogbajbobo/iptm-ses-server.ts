@@ -9,7 +9,7 @@ const authRoutes: Route[] = [
     },
 ]
 
-export const initAuthRoutes: RouteInitializer = router => {
+export const authRoutesInitializer: RouteInitializer = router => {
 
     authRoutes.forEach(route => {
 

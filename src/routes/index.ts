@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import { RouteInitializer } from './interfaces'
-import { initAuthRoutes } from './auth'
+import { authRoutesInitializer } from './auth'
 
 const routeInitializers: RouteInitializer[] = [
-    initAuthRoutes,
+    authRoutesInitializer,
 ]
 
 export const router = Router()
