@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import bodyParser from 'body-parser'
 import { log, requestLogger } from './services/logger'
-import { AppRoutes, Route } from './routes'
-
+import { router } from './routes'
 
 export const startServer = (): void => {
 
@@ -10,17 +10,10 @@ export const startServer = (): void => {
 
     app.use(requestLogger)
 
-    AppRoutes.forEach((route: Route) => {
+    app.use(bodyParser.urlencoded({extended: true}))
+    app.use(bodyParser.json())
 
-        const { method, action, path } = route
-
-        app[method](path, (req: Request, res: Response, next) => {
-            action(req, res)
-                .then(next)
-                .catch(next)
-        })
-
-    })
+    app.use(router)
 
     app.listen(PORT, () => {
         log.info(`⚡️[server]: Server is running at https://localhost:${PORT}`)
