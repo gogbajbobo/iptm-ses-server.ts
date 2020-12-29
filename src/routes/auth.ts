@@ -1,7 +1,7 @@
 import { Route, RouteInitializer } from './interfaces'
 import { login } from '../controller/auth'
 
-export const authRoutes: Route[] = [
+const authRoutes: Route[] = [
     {
         path: '/login',
         method: 'post',
