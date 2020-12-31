@@ -1,11 +1,16 @@
 import { Route, RouteInitializer } from './interfaces'
-import { login } from '../controller/auth'
+import { login, logout } from '../controller/auth'
 
 const authRoutes: Route[] = [
     {
         path: '/login',
         method: 'post',
         action: login
+    },
+    {
+        path: '/logout',
+        method: 'post',
+        action: logout
     },
 ]
 
