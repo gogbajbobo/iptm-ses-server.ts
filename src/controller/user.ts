@@ -1,4 +1,4 @@
-import config from 'nconf'
+import config from '../services/config'
 
 export const findOne = ({ login }: Record<string, string>): Promise<UserType> => {
     return new Promise(resolve => resolve(userList.find(user => user.login === login)))
