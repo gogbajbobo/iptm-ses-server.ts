@@ -17,7 +17,8 @@ const userCheckFail = (text, done) => {
 
 const checkPassword = (password, user: User.UserType, done) => {
 
-    const { login, hash } = user
+    const { id, login, hash } = user
+    const safeUser = { id, login }
 
     return compare(password, hash)
         .then(res => {
@@ -26,7 +27,7 @@ const checkPassword = (password, user: User.UserType, done) => {
                 return userCheckFail(`check password fail for user: ${ login }`, done)
 
             log.info(`check password success for user: ${ login }`)
-            done(null, user)
+            done(null, safeUser)
 
         })
 
