@@ -5,12 +5,12 @@ const authRoutes: Route[] = [
     {
         path: '/login',
         method: 'post',
-        action: login
+        actions: [login]
     },
     {
         path: '/logout',
         method: 'post',
-        action: logout
+        actions: [logout]
     },
 ]
 
@@ -18,8 +18,8 @@ export const authRoutesInitializer: RouteInitializer = router => {
 
     authRoutes.forEach(route => {
 
-        const { path, method, action } = route
-        router[method](path, action)
+        const { path, method, actions } = route
+        router[method](path, ...actions)
 
     })
 
