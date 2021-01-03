@@ -1,11 +1,12 @@
 import { Route, RouteInitializer } from './interfaces'
+import passport from '../services/passport'
 import { login, logout } from '../controller/auth'
 
 const authRoutes: Route[] = [
     {
         path: '/login',
         method: 'post',
-        actions: [login]
+        actions: [passport.authenticate('local'), login]
     },
     {
         path: '/logout',
