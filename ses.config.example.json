@@ -1,0 +1,33 @@
+{
+	"env": "development",
+	"server": "local",
+    "network": {
+    	"server": {
+    		"port": 8021,
+    		"protocol": "http",
+    		"host": "localhost"
+    	},
+    	"clients": [
+			{
+				"port": 8022,
+				"protocol": "http",
+				"host": "localhost"
+			}
+		]
+    },
+    "log": {
+    	"path": "../../ses.logs"
+    },
+    "db": {
+		"type": "mysql",
+		"host": "localhost",
+		"port": "3306",
+    	"username": "root",
+		"database": "iptm_ses",
+		"charset": "utf8mb4"
+    },
+    "jwt": {
+		"secretKey": "This is super secret key which should be hidden"
+	}
+}
+
