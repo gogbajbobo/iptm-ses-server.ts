@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import config from './config'
 
 import morgan from 'morgan'
 import { createLogger, transports, format } from 'winston'
@@ -8,7 +9,7 @@ import 'winston-daily-rotate-file'
 import { isProduction } from './helper'
 
 
-const logDirectory = path.join(__dirname, '../../logs')
+const logDirectory = path.join(__dirname, config.get(`log:path`))
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 
 const myFormat = format.printf(({ level, message, timestamp }) => {
