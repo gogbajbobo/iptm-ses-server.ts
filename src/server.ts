@@ -2,11 +2,11 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { log, requestLogger } from './services/logger'
 import { router } from './routes'
+import { serverConfig } from './services/config'
 
 export const startServer = (): void => {
 
     const app = express()
-    const PORT = 8000
 
     app.use(requestLogger)
 
@@ -15,8 +15,17 @@ export const startServer = (): void => {
 
     app.use(router)
 
-    app.listen(PORT, () => {
-        log.info(`⚡️[server]: Server is running at https://localhost:${PORT}`)
+    const { protocol, host, port} = serverConfig()
+
+    log.info(`Server host: ${ protocol }://${ host }:${ port }`)
+
+    app.listen(port, host, () => {
+
+        const
+            message = `Server listening at ${ new Date() }`
+
+        log.info(message)
+
     })
 
 }
