@@ -1,3 +1,5 @@
+import config from 'nconf'
+
 export const findOne = ({ login }: Record<string, string>): Promise<UserType> => {
     return new Promise(resolve => resolve(userList.find(user => user.login === login)))
 }
@@ -16,11 +18,11 @@ const userList: UserType[] = [
     {
         id: '0',
         login: 'admin',
-        hash: '',
+        hash: config.get('testuserpassword'),
     },
     {
         id: '1',
         login: 'user',
-        hash: '',
+        hash: config.get('testuserpassword'),
     },
 ]
