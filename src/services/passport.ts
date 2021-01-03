@@ -1,8 +1,11 @@
 import { compare } from 'bcryptjs'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import * as User from '../controller/user'
 import { log } from './logger'
+import config from './config'
+import { checkJwtPayload } from './token'
 
 
 const userCheckFail = (text, done) => {
@@ -46,6 +49,34 @@ const localStrategyVerify = (login, password, done) => {
 }
 
 passport.use(new LocalStrategy(localStrategyOptions, localStrategyVerify))
+
+const jwtStrategyOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: config.get('jwt:secretKey'),
+    passReqToCallback: true
+}
+const jwtStrategyCallback = (req, jwtPayload, done) => {
+
+    checkJwtPayload(jwtPayload, err => {
+
+        if (err) {
+
+            const text = `checkJwtPayload error: ${ err.message }`
+            log.error(text)
+
+            return done(null, false)
+
+        }
+
+        User.findById(jwtPayload.id)
+            .then(user => done(null, user))
+            .catch(err => done(err, false))
+
+    })
+
+}
+
+passport.use(new JwtStrategy(jwtStrategyOptions, jwtStrategyCallback))
 
 const serializeUser = (user: User.UserType, done) => {
     done(null, user.id)
