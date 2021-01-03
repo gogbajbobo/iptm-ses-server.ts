@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { RouteInitializer } from './interfaces'
+import { allowedOrigins } from '../services/config'
+import { log } from '../services/logger'
 
-const allowedOrigins = [ 'http://localhost:8082' ]
+log.info(`Allowed client origins: ${ allowedOrigins }`)
 
 export const corsRoutesInitializer: RouteInitializer = (router) => {
 

@@ -51,4 +51,22 @@ export const dbConfig = (): MysqlConnectionOptions => {
 
 }
 
+type ClientConfigType = {
+    protocol: string
+    host: string
+    port: number
+}
+
+const clientsConfig: ClientConfigType[] = config.get(`network:clients`)
+
+export const allowedOrigins = Object.values(clientsConfig).map(config => {
+
+    const { protocol, host, port } = config
+
+    const baseOrigin = `${ protocol }://${ host }`
+    return port ? `${ baseOrigin }:${ port }` : baseOrigin
+
+})
+
+
 export default config
