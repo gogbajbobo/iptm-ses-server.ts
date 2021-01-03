@@ -1,4 +1,5 @@
 import config from 'nconf'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
 config
     .file('../ses.config.json')
@@ -33,6 +34,20 @@ export const serverConfig = (): ServerConfigType => {
         serverType = config.get('server')
 
     return { protocol, host, port, serverType }
+
+}
+
+export const dbConfig = (): MysqlConnectionOptions => {
+
+    return {
+        type: config.get('db:type'),
+        host: config.get('db:host'),
+        port: config.get('db:port'),
+        username: config.get('db:username'),
+        password: config.get('db:password'),
+        database: config.get('db:database'),
+        charset: config.get('db:charset'),
+    }
 
 }
 
