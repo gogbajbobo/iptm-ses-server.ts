@@ -34,7 +34,7 @@ const checkPassword = (password, user: User.UserType, done) => {
 }
 
 const localStrategyOptions = { usernameField: 'login' }
-const localStrategyVerify = (login, password, done) => {
+const localStrategyCallback = (login, password, done) => {
 
     User.findOne({ login })
         .then(user => {
@@ -49,7 +49,7 @@ const localStrategyVerify = (login, password, done) => {
 
 }
 
-passport.use(new LocalStrategy(localStrategyOptions, localStrategyVerify))
+passport.use(new LocalStrategy(localStrategyOptions, localStrategyCallback))
 
 const jwtStrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
