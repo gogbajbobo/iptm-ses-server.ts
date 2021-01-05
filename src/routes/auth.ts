@@ -11,7 +11,7 @@ const authRoutes: Route[] = [
     {
         path: '/logout',
         method: 'post',
-        actions: [logout]
+        actions: [passport.authenticate('jwt'), logout]
     },
 ]
 
