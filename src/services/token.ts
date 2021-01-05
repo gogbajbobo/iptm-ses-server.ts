@@ -11,7 +11,8 @@ export const invokeToken = (req: Request, msg: string): Record<string,unknown> =
         { user } = req,
         now = Date.now(),
         expirationTime = Math.floor(now / 1000) + tokenLifetime,
-        accessToken = jwt.sign(user, config.get('jwt:secretKey')),
+        userData = { ...user, expirationTime  },
+        accessToken = jwt.sign(userData, config.get('jwt:secretKey')),
         message = msg || 'Token invoked successfully'
 
 
