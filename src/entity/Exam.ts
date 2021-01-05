@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-import { Question } from './Question'
+import { Section } from './Section'
 
 @Entity()
 export class Exam {
@@ -10,7 +10,7 @@ export class Exam {
     @Column()
     title: string
 
-    @OneToMany(() => Question, question => question.exam)
-    questions: Question[]
+    @OneToMany(() => Section, section => section.exam)
+    sections: Section[]
 
 }
