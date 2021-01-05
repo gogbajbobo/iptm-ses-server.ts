@@ -35,15 +35,15 @@ export const checkJwtPayload = (jwtPayload, callback) => {
     if (!jwtPayload)
         return callback(new Error('Unauthorized / Empty jwtPayload'))
 
-    const { expirationTime, login } = jwtPayload
+    const { expirationTime, username } = jwtPayload
 
     const expirationDate = new Date(expirationTime * 1000)
 
     if (isNaN(Date.parse(expirationDate.toString())))
-        return callback(new Error(`Invalid token expiration date for ${ login }`))
+        return callback(new Error(`Invalid token expiration date for ${ username }`))
 
     if (expirationDate < new Date())
-        return callback(new Error(`Token expire for ${ login }`))
+        return callback(new Error(`Token expire for ${ username }`))
 
     callback(null)
 

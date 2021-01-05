@@ -17,30 +17,30 @@ const userCheckFail = (text, done) => {
 
 const checkPassword = (password, user: User.UserType, done) => {
 
-    const { id, login, hash } = user
-    const safeUser = { id, login }
+    const { id, username, hash } = user
+    const safeUser = { id, username }
 
     return compare(password, hash)
         .then(res => {
 
             if (!res)
-                return userCheckFail(`check password fail for user: ${ login }`, done)
+                return userCheckFail(`check password fail for user: ${ username }`, done)
 
-            log.info(`check password success for user: ${ login }`)
+            log.info(`check password success for user: ${ username }`)
             done(null, safeUser)
 
         })
 
 }
 
-const localStrategyOptions = { usernameField: 'login' }
-const localStrategyCallback = (login, password, done) => {
+const localStrategyOptions = { usernameField: 'username' }
+const localStrategyCallback = (username, password, done) => {
 
-    User.findOne({ login })
+    User.findOne({ username })
         .then(user => {
 
             if (!user)
-                return userCheckFail(`no such user with login: ${ login }`, done)
+                return userCheckFail(`no such user with username: ${ username }`, done)
 
             return checkPassword(password, user, done)
 

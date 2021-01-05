@@ -1,7 +1,7 @@
 import config from '../services/config'
 
-export const findOne = ({ login }: Record<string, string>): Promise<UserType> => {
-    return new Promise(resolve => resolve(userList.find(user => user.login === login)))
+export const findOne = ({ username }: Record<string, string>): Promise<UserType> => {
+    return new Promise(resolve => resolve(userList.find(user => user.username === username)))
 }
 
 export const findById = (id: string): Promise<UserType> => {
@@ -10,19 +10,19 @@ export const findById = (id: string): Promise<UserType> => {
 
 export type UserType = {
     id: string
-    login: string
+    username: string
     hash: string
 }
 
 const userList: UserType[] = [
     {
         id: '0',
-        login: 'admin',
+        username: 'admin',
         hash: config.get('testuserpassword'),
     },
     {
         id: '1',
-        login: 'user',
+        username: 'user',
         hash: config.get('testuserpassword'),
     },
 ]
