@@ -21,10 +21,8 @@ export const invokeToken = (req: Request, msg: string): Record<string,unknown> =
 
     return {
         error: false,
-        user,
+        user: { ...user, accessToken },
         message,
-        accessToken,
-        expirationTime
     }
 
 }
