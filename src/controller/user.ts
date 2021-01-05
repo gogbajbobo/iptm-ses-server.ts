@@ -1,28 +1,10 @@
-import config from '../services/config'
+import { getRepository } from 'typeorm'
+import { User } from '../entity/User'
 
-export const findOne = ({ username }: Record<string, string>): Promise<UserType> => {
-    return new Promise(resolve => resolve(userList.find(user => user.username === username)))
+export const findOne = (options: Record<string, string>): Promise<User> => {
+    return getRepository(User).findOne(options)
 }
 
-export const findById = (id: string): Promise<UserType> => {
-    return new Promise(resolve => resolve(userList.find(user => user.id === id)))
+export const findById = (id: number): Promise<User> => {
+    return getRepository(User).findOne(id)
 }
-
-export type UserType = {
-    id: string
-    username: string
-    hash: string
-}
-
-const userList: UserType[] = [
-    {
-        id: '0',
-        username: 'admin',
-        hash: config.get('testuserpassword'),
-    },
-    {
-        id: '1',
-        username: 'user',
-        hash: config.get('testuserpassword'),
-    },
-]
