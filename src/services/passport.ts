@@ -15,10 +15,10 @@ const userCheckFail = (text, done) => {
 
 }
 
-const checkPassword = (password, user: User.UserType, done) => {
+const checkPassword = (password, user, done) => {
 
-    const { id, username, hash } = user
-    const safeUser = { id, username }
+    const hash = config.get('testuserpassword')
+    const { username } = user
 
     return compare(password, hash)
         .then(res => {
@@ -27,7 +27,7 @@ const checkPassword = (password, user: User.UserType, done) => {
                 return userCheckFail(`check password fail for user: ${ username }`, done)
 
             log.info(`check password success for user: ${ username }`)
-            done(null, safeUser)
+            done(null, user)
 
         })
 
@@ -79,7 +79,7 @@ const jwtStrategyCallback = (req, jwtPayload, done) => {
 
 passport.use(new JwtStrategy(jwtStrategyOptions, jwtStrategyCallback))
 
-const serializeUser = (user: User.UserType, done) => {
+const serializeUser = (user, done) => {
     done(null, user.id)
 }
 
