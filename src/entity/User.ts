@@ -20,7 +20,7 @@ export class User {
         enum: UserRole,
         default: [ UserRole.EXAMINEE ]
     })
-    role: UserRole[]
+    roles: UserRole[]
 
     @ManyToMany(() => Category, category => category.users)
     categories: Category[]
