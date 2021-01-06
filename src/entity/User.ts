@@ -4,6 +4,7 @@ import { Category } from './Category'
 export enum UserRole {
     EXAMINER = 'examiner',
     EXAMINEE = 'examinee',
+    VISITOR = 'visitor',
 }
 
 @Entity()
@@ -18,7 +19,7 @@ export class User {
     @Column({
         type: 'set',
         enum: UserRole,
-        default: [ UserRole.EXAMINEE ]
+        default: [ UserRole.VISITOR ]
     })
     roles: UserRole[]
 
