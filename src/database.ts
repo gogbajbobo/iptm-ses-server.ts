@@ -10,6 +10,7 @@ const basePath = isProduction ? 'build' : 'src'
 const connectionOptions: ConnectionOptions = {
     ...dbConfig(),
     synchronize: !isProduction,
+    cache: true,
     dropSchema: false,
     logging: [ 'error' ],
     maxQueryExecutionTime: 1000,
