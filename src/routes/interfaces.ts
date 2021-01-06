@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-export type RouteAction = (req: Request, res: Response) => Response | NextFunction
+type RouteActionResponse = Response | NextFunction | Promise<Response> | Promise<NextFunction>
+export type RouteAction = (req: Request, res: Response) => RouteActionResponse
 
 export interface Route {
     path: string
