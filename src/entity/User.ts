@@ -1,11 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm'
 import { Category } from './Category'
+import { UserRole } from './UserRole'
 
-export enum UserRole {
-    EXAMINER = 'examiner',
-    EXAMINEE = 'examinee',
-    VISITOR = 'visitor',
-}
 
 @Entity()
 export class User {

@@ -2,7 +2,7 @@ import {Route} from '../interfaces'
 import passport from '../../services/passport'
 import {getCategories} from '../../controller/categories'
 import {requireRoles} from '../../services/rolesChecker'
-import { UserRole } from '../../entity/User'
+import { UserRole } from '../../entity/UserRole'
 
 const path = '/categories'
 

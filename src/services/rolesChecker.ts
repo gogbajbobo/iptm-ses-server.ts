@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import { UserRole, User } from '../entity/User'
+import { User } from '../entity/User'
+import { UserRole } from '../entity/UserRole'
 import { RouteActionResponse } from '../routes/interfaces'
 
 
