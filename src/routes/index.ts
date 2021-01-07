@@ -4,6 +4,7 @@ import { Route } from './interfaces'
 import { corsRoutesInitializer } from './cors'
 import auth from './auth'
 import examinees from './examinees'
+import categories from './categories'
 
 
 export const router = Router()
@@ -17,6 +18,7 @@ const routeInit = (route: Route) => {
 const routes: Route[] = [
     ...auth,
     ...examinees,
+    ...categories,
 ]
 
 routes.forEach(routeInit)
