@@ -1,15 +1,13 @@
 import { Router } from 'express'
 import { Route } from './interfaces'
 
-import { corsRoutesInitializer } from './cors'
+import cors from './cors'
 import auth from './auth'
 import examinees from './api/examinees'
 import categories from './api/categories'
 
 
 export const router = Router()
-
-corsRoutesInitializer(router)
 
 const routeInit = (route: Route) => {
 
@@ -20,6 +18,7 @@ const routeInit = (route: Route) => {
 }
 
 const routes: Route[] = [
+    ...cors,
     ...auth,
     ...examinees,
     ...categories,

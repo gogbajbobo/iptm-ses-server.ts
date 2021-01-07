@@ -1,37 +1,42 @@
 import { Request, Response, NextFunction } from 'express'
-import { RouteInitializer, RouteActionResponse } from './interfaces'
+import { RouteActionResponse, Route } from './interfaces'
 import { allowedOrigins } from '../services/config'
 import { log } from '../services/logger'
 
 log.info(`Allowed client origins: ${ allowedOrigins }`)
 
-export const corsRoutesInitializer: RouteInitializer = router => {
+const corsInit = (req: Request, res: Response, next: NextFunction): RouteActionResponse => {
 
-    router.route('*')
-        .all((req: Request, res: Response, next: NextFunction): RouteActionResponse => {
+    if (req.path === '/') {
 
-            if (req.path === '/') {
+        res.header('Access-Control-Allow-Origin', '*')
 
-                res.header('Access-Control-Allow-Origin', '*')
+    } else {
 
-            } else {
+        const reqOrigin = req.headers['origin']
 
-                const reqOrigin = req.headers['origin']
+        if (!allowedOrigins.includes(reqOrigin))
+            return res.status(403).send()
 
-                if (!allowedOrigins.includes(reqOrigin))
-                    return res.status(403).send()
+        res.header('Access-Control-Allow-Origin', reqOrigin)
 
-                res.header('Access-Control-Allow-Origin', reqOrigin)
+    }
 
-            }
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-type, Authorization')
 
-            res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
-            res.header('Access-Control-Allow-Headers', 'Content-type, Authorization')
-
-            return req.method === 'OPTIONS'
-                ? res.status(200).send()
-                : next()
-
-        })
+    return req.method === 'OPTIONS'
+        ? res.status(200).send()
+        : next()
 
 }
+
+const routes: Route[] = [
+    {
+        path: '*',
+        method: 'all',
+        actions: [ corsInit ]
+    }
+]
+
+export default routes
