@@ -12,7 +12,11 @@ export const router = Router()
 corsRoutesInitializer(router)
 
 const routeInit = (route: Route) => {
-    router[route.method](route.path, ...route.actions)
+
+    route.authorize
+        ? router[route.method](route.path, ...route.authorize, ...route.actions)
+        : router[route.method](route.path, ...route.actions)
+
 }
 
 const routes: Route[] = [

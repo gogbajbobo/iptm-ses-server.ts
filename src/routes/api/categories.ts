@@ -10,7 +10,11 @@ const routes: Route[] = [
     {
         path,
         method: 'get',
-        actions: [passport.authenticate('jwt'), requireRoles([UserRole.EXAMINER]), getCategories]
+        authorize: [
+            passport.authenticate('jwt'),
+            requireRoles([UserRole.EXAMINER]),
+        ],
+        actions: [ getCategories ]
     },
 ]
 
