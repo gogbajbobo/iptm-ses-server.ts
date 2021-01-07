@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-type RouteActionResponse = Response | NextFunction | Promise<Response> | Promise<NextFunction>
+export type RouteActionResponse = Response | NextFunction | Promise<Response> | Promise<NextFunction> | void
 export type RouteAction = (req: Request, res: Response) => RouteActionResponse
 
 export interface Route {
