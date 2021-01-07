@@ -1,15 +1,22 @@
 import { Router } from 'express'
-import { RouteInitializer } from './interfaces'
-import { corsRoutesInitializer } from './cors'
-import { authRoutesInitializer } from './auth'
-import { examineesRoutesInitializer } from './examinees'
+import { Route } from './interfaces'
 
-const routeInitializers: RouteInitializer[] = [
-    corsRoutesInitializer,
-    authRoutesInitializer,
-    examineesRoutesInitializer,
-]
+import { corsRoutesInitializer } from './cors'
+import auth from './auth'
+import examinees from './examinees'
+
 
 export const router = Router()
 
-routeInitializers.forEach(ri => ri(router))
+corsRoutesInitializer(router)
+
+const routeInit = (route: Route) => {
+    router[route.method](route.path, ...route.actions)
+}
+
+const routes: Route[] = [
+    ...auth,
+    ...examinees,
+]
+
+routes.forEach(routeInit)

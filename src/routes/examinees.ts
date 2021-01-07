@@ -1,4 +1,4 @@
-import { Route, RouteInitializer } from './interfaces'
+import { Route } from './interfaces'
 import passport from '../services/passport'
 import { getExaminees } from '../controller/examinees'
 
@@ -12,13 +12,4 @@ const routes: Route[] = [
     },
 ]
 
-export const examineesRoutesInitializer: RouteInitializer = router => {
-
-    routes.forEach(route => {
-
-        const { path, method, actions } = route
-        router[method](path, ...actions)
-
-    })
-
-}
+export default routes

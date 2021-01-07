@@ -1,8 +1,8 @@
-import { Route, RouteInitializer } from './interfaces'
+import { Route } from './interfaces'
 import passport from '../services/passport'
 import { login, logout } from '../controller/auth'
 
-const authRoutes: Route[] = [
+const routes: Route[] = [
     {
         path: '/login',
         method: 'post',
@@ -15,13 +15,4 @@ const authRoutes: Route[] = [
     },
 ]
 
-export const authRoutesInitializer: RouteInitializer = router => {
-
-    authRoutes.forEach(route => {
-
-        const { path, method, actions } = route
-        router[method](path, ...actions)
-
-    })
-
-}
+export default routes
