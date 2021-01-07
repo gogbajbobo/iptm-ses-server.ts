@@ -6,12 +6,14 @@ const routes: Route[] = [
     {
         path: '/login',
         method: 'post',
-        actions: [passport.authenticate('local'), login]
+        authorize: [ passport.authenticate('local') ],
+        actions: [ login ]
     },
     {
         path: '/logout',
         method: 'post',
-        actions: [passport.authenticate('jwt'), logout]
+        authorize: [ passport.authenticate('jwt') ],
+        actions: [ logout ]
     },
 ]
 
