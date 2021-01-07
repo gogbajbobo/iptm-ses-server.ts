@@ -1,12 +1,11 @@
 import { getRepository, FindManyOptions, Raw } from 'typeorm'
 import { User, UserRole } from '../entity/User'
 import { Request, Response } from 'express'
+import { defaultFindOptions } from './_helper'
 
 export const getExaminees = (req: Request, res: Response): Promise<Response> => {
 
-    const options: FindManyOptions = req.body.options || {}
-
-    if (!options.take) options.take = 100
+    const options: FindManyOptions = defaultFindOptions(req)
 
     options.where = {
         roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
