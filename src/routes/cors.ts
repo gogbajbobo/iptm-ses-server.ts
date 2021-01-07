@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { RouteInitializer } from './interfaces'
+import { RouteInitializer, RouteActionResponse } from './interfaces'
 import { allowedOrigins } from '../services/config'
 import { log } from '../services/logger'
 
@@ -8,7 +8,7 @@ log.info(`Allowed client origins: ${ allowedOrigins }`)
 export const corsRoutesInitializer: RouteInitializer = router => {
 
     router.route('*')
-        .all((req: Request, res: Response, next: NextFunction) => {
+        .all((req: Request, res: Response, next: NextFunction): RouteActionResponse => {
 
             if (req.path === '/') {
 
