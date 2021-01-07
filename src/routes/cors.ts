@@ -5,7 +5,7 @@ import { log } from '../services/logger'
 
 log.info(`Allowed client origins: ${ allowedOrigins }`)
 
-export const corsRoutesInitializer: RouteInitializer = (router) => {
+export const corsRoutesInitializer: RouteInitializer = router => {
 
     router.route('*')
         .all((req: Request, res: Response, next: NextFunction) => {
