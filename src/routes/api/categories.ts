@@ -1,6 +1,6 @@
-import { Route } from './interfaces'
-import passport from '../services/passport'
-import { getCategories } from '../controller/categories'
+import { Route } from '../interfaces'
+import passport from '../../services/passport'
+import { getCategories } from '../../controller/categories'
 
 const path = '/categories'
 

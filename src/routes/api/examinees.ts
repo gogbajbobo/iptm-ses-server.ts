@@ -1,6 +1,6 @@
-import { Route } from './interfaces'
-import passport from '../services/passport'
-import { getExaminees } from '../controller/examinees'
+import { Route } from '../interfaces'
+import passport from '../../services/passport'
+import { getExaminees } from '../../controller/examinees'
 
 const path = '/examinees'
 

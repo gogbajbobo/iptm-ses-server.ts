@@ -3,8 +3,8 @@ import { Route } from './interfaces'
 
 import { corsRoutesInitializer } from './cors'
 import auth from './auth'
-import examinees from './examinees'
-import categories from './categories'
+import examinees from './api/examinees'
+import categories from './api/categories'
 
 
 export const router = Router()
