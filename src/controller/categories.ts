@@ -25,3 +25,16 @@ export const addCategory = (req: Request, res: Response): Promise<Response> => {
         .catch(serverError(res))
 
 }
+
+export const deleteCategory = (req: Request, res: Response): Promise<Response> => {
+
+    const { id } = req.params
+
+    if (!id)
+        return rejectedClientError(res, 'have no id for category')
+
+    return getRepository(Category).delete(id)
+        .then(result => res.json(result))
+        .catch(serverError(res))
+
+}

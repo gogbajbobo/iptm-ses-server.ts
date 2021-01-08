@@ -1,14 +1,15 @@
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
-import { getCategories, addCategory } from '../../controller/categories'
+import { getCategories, addCategory, deleteCategory } from '../../controller/categories'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
 
 const path = '/categories'
+const pathWithId = `${ path }/:id`
 
 const routes: Route[] = [
     {
-        path,
+        path: [ path, pathWithId ],
         method: 'all',
         authorize: [
             passport.authenticate('jwt'),
@@ -25,6 +26,11 @@ const routes: Route[] = [
         path,
         method: 'post',
         actions: [ addCategory ]
+    },
+    {
+        path: pathWithId,
+        method: 'delete',
+        actions: [ deleteCategory ]
     },
 ]
 
