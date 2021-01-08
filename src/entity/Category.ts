@@ -9,7 +9,7 @@ export class Category {
     id: number
 
     @Column()
-    name: string
+    title: string
 
     @ManyToMany(() => User, user => user.categories)
     @JoinTable()
