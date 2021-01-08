@@ -9,11 +9,16 @@ const path = '/examinees'
 const routes: Route[] = [
     {
         path,
-        method: 'get',
+        method: 'all',
         authorize: [
             passport.authenticate('jwt'),
             requireRoles([UserRole.EXAMINER])
         ],
+        actions: []
+    },
+    {
+        path,
+        method: 'get',
         actions: [ getExaminees ]
     },
 ]

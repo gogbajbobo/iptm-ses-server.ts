@@ -9,20 +9,21 @@ const path = '/categories'
 const routes: Route[] = [
     {
         path,
-        method: 'get',
+        method: 'all',
         authorize: [
             passport.authenticate('jwt'),
             requireRoles([UserRole.EXAMINER]),
         ],
+        actions: []
+    },
+    {
+        path,
+        method: 'get',
         actions: [ getCategories ]
     },
     {
         path,
         method: 'post',
-        authorize: [
-            passport.authenticate('jwt'),
-            requireRoles([UserRole.EXAMINER]),
-        ],
         actions: [ addCategory ]
     },
 ]
