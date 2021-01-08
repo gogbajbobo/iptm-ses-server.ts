@@ -1,6 +1,6 @@
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
-import { getCategories, addCategory, deleteCategory } from '../../controller/categories'
+import { getCategories, addCategory, updateCategory, deleteCategory } from '../../controller/categories'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
 
@@ -26,6 +26,11 @@ const routes: Route[] = [
         path,
         method: 'post',
         actions: [ addCategory ]
+    },
+    {
+        path: pathWithId,
+        method: 'put',
+        actions: [ updateCategory ]
     },
     {
         path: pathWithId,
