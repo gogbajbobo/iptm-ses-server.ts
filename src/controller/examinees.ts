@@ -11,6 +11,7 @@ export const getExaminees = (req: Request, res: Response): Promise<Response> => 
     options.where = {
         roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
     }
+    options.relations = [ 'categories' ]
 
     return getRepository(User).find(options)
         .then(examinees => res.json(examinees))
