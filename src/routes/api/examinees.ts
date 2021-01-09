@@ -1,10 +1,11 @@
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
-import { getExaminees } from '../../controller/examinees'
+import { getExaminees, updateExaminee } from '../../controller/examinees'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
 
 const path = '/examinees'
+const pathWithId = `${ path }/:id`
 
 const routes: Route[] = [
     {
@@ -20,6 +21,11 @@ const routes: Route[] = [
         path,
         method: 'get',
         actions: [ getExaminees ]
+    },
+    {
+        path: pathWithId,
+        method: 'put',
+        actions: [ updateExaminee ]
     },
 ]
 
