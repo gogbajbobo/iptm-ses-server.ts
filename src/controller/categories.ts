@@ -31,8 +31,8 @@ export const updateCategory = (req: Request, res: Response): Promise<Response> =
     const { id } = req.params
     const { category } = req.body
 
-    if (!id)
-        return rejectedClientError(res, 'have no id for category')
+    if (!id || !category)
+        return rejectedClientError(res, 'have no id or category')
 
     const categoryRepository = getRepository(Category)
 
