@@ -45,9 +45,4 @@ export const updateExaminee = (req: Request, res: Response): Promise<Response> =
         })
         .catch(serverError(res))
 
-    // return userRepository.update(id, examinee)
-    //     .then(() => userRepository.findOne(id))
-    //     .then(examinee => res.json(examinee))
-    //     .catch(serverError(res))
-
 }
