@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { FindManyOptions } from 'typeorm'
+import { log } from '../services/logger'
 
 export const defaultFindOptions = (req: Request): FindManyOptions => {
 
@@ -14,7 +15,14 @@ export const defaultFindOptions = (req: Request): FindManyOptions => {
 type HandleErrorReturnType = (err: Error) => Response
 
 export const handleError = (res: Response, code: number): HandleErrorReturnType => {
-    return (err: Error): Response => res.status(code).json({ error: err.message })
+
+    return (err: Error): Response => {
+
+        log.error(err.message)
+        return res.status(code).json({ error: err.message })
+
+    }
+
 }
 
 export const clientError = (res: Response, code = 400): HandleErrorReturnType => handleError(res, code)
