@@ -15,7 +15,6 @@ export const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
-
 export const addItem = (req: Request, res: Response): Promise<Response> => {
 
     const { item } = req.body
@@ -23,7 +22,10 @@ export const addItem = (req: Request, res: Response): Promise<Response> => {
     if (!item)
         return rejectedClientError(res, 'have no item in request')
 
-    return getRepository(Entity).save(item)
+    const itemRepository = getRepository(Entity)
+
+    return itemRepository.save(item)
+        .then(item => itemRepository.findOne(item))
         .then(item => res.json(item))
         .catch(serverError(res))
 
