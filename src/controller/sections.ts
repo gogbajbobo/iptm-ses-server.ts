@@ -7,7 +7,10 @@ import { defaultFindOptions, serverError, rejectedClientError } from './_helper'
 
 export const getItems = (req: Request, res: Response): Promise<Response> => {
 
+    const { query } = req
+
     const options: FindManyOptions = defaultFindOptions(req)
+    options.where = query
 
     return getRepository(Entity).find(options)
         .then(items => res.json(items))
