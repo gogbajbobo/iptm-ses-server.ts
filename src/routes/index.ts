@@ -7,6 +7,7 @@ import examinees from './api/examinees'
 import categories from './api/categories'
 import exams from './api/exams'
 import sections from './api/sections'
+import questions from './api/questions'
 
 
 export const router = Router()
@@ -26,6 +27,7 @@ const routes: Route[] = [
     ...categories,
     ...exams,
     ...sections,
+    ...questions,
 ]
 
 routes.forEach(routeInit)
