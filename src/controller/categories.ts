@@ -8,20 +8,20 @@ export const getCategories = (req: Request, res: Response): Promise<Response> =>
     const options: FindManyOptions = defaultFindOptions(req)
 
     return getRepository(Category).find(options)
-        .then(categories => res.json(categories))
+        .then(items => res.json(items))
         .catch(serverError(res))
 
 }
 
 export const addCategory = (req: Request, res: Response): Promise<Response> => {
 
-    const { category } = req.body
+    const { item } = req.body
 
-    if (!category)
-        return rejectedClientError(res, 'have no category in request')
+    if (!item)
+        return rejectedClientError(res, 'have no item in request')
 
-    return getRepository(Category).save(category)
-        .then(category => res.json(category))
+    return getRepository(Category).save(item)
+        .then(item => res.json(item))
         .catch(serverError(res))
 
 }
@@ -29,16 +29,16 @@ export const addCategory = (req: Request, res: Response): Promise<Response> => {
 export const updateCategory = (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params
-    const { category } = req.body
+    const { item } = req.body
 
-    if (!id || !category)
-        return rejectedClientError(res, 'have no id or category')
+    if (!id || !item)
+        return rejectedClientError(res, 'have no id or item')
 
     const categoryRepository = getRepository(Category)
 
-    return categoryRepository.update(id, category)
+    return categoryRepository.update(id, item)
         .then(() => categoryRepository.findOne(id))
-        .then(category => res.json(category))
+        .then(item => res.json(item))
         .catch(serverError(res))
 
 }
@@ -48,7 +48,7 @@ export const deleteCategory = (req: Request, res: Response): Promise<Response> =
     const { id } = req.params
 
     if (!id)
-        return rejectedClientError(res, 'have no id for category')
+        return rejectedClientError(res, 'have no id for item')
 
     return getRepository(Category).delete(id)
         .then(result => res.json(result))
