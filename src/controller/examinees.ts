@@ -14,7 +14,7 @@ export const getExaminees = (req: Request, res: Response): Promise<Response> => 
     options.relations = [ 'categories' ]
 
     return getRepository(User).find(options)
-        .then(examinees => res.json(examinees))
+        .then(items => res.json(items))
         .catch(err => res.status(500).json({ error: err.message }))
 
 }
@@ -22,12 +22,12 @@ export const getExaminees = (req: Request, res: Response): Promise<Response> => 
 export const updateExaminee = (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params
-    const { examinee } = req.body
+    const { item } = req.body
 
-    if (!id || !examinee)
-        return rejectedClientError(res, 'have no id or examinee')
+    if (!id || !item)
+        return rejectedClientError(res, 'have no id or item')
 
-    const { categories } = examinee
+    const { categories } = item
 
     if (!categories)
         return rejectedClientError(res, 'for now only categories may be updated')
