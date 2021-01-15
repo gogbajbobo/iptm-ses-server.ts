@@ -7,7 +7,7 @@ type Class<T> = new (...args: any[]) => T
 
 type RequestHandler = (req: Request, res: Response) => Promise<Response>
 
-type ControllerFunctions = {
+export type ControllerFunctions = {
     getItems: RequestHandler
     addItem: RequestHandler
     updateItem: RequestHandler
