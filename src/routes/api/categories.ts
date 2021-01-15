@@ -1,8 +1,12 @@
+import { controller } from '../../controller'
+import entity from '../../entity'
+
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
-import { getCategories, addCategory, updateCategory, deleteCategory } from '../../controller/categories'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
+
+const { getItems, addItem, updateItem, deleteItem } = controller(entity.Category)
 
 const path = '/categories'
 const pathWithId = `${ path }/:id`
@@ -20,22 +24,22 @@ const routes: Route[] = [
     {
         path,
         method: 'get',
-        actions: [ getCategories ]
+        actions: [ getItems ]
     },
     {
         path,
         method: 'post',
-        actions: [ addCategory ]
+        actions: [ addItem ]
     },
     {
         path: pathWithId,
         method: 'put',
-        actions: [ updateCategory ]
+        actions: [ updateItem ]
     },
     {
         path: pathWithId,
         method: 'delete',
-        actions: [ deleteCategory ]
+        actions: [ deleteItem ]
     },
 ]
 
