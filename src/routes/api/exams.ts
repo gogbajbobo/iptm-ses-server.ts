@@ -1,10 +1,12 @@
-import { getItems, addItem, updateItem, deleteItem } from '../../controller/exams'
+import { controller } from '../../controller'
+import { Exam } from '../../entity/Exam'
 
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
 
+const { getItems, addItem, updateItem, deleteItem } = controller(Exam)
 
 const path = '/exams'
 const pathWithId = `${ path }/:id`
