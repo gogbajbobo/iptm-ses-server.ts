@@ -1,6 +1,6 @@
 import { Route } from '../interfaces'
 import passport from '../../services/passport'
-import { getExaminees, updateExaminee } from '../../controller/examinees'
+import { getItems, updateItem } from '../../controller/examinees'
 import { requireRoles } from '../../services/rolesChecker'
 import { UserRole } from '../../entity/UserRole'
 
@@ -20,12 +20,12 @@ const routes: Route[] = [
     {
         path,
         method: 'get',
-        actions: [ getExaminees ]
+        actions: [ getItems ]
     },
     {
         path: pathWithId,
         method: 'put',
-        actions: [ updateExaminee ]
+        actions: [ updateItem ]
     },
 ]
 

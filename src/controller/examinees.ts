@@ -4,7 +4,7 @@ import { User } from '../entity/User'
 import { UserRole } from '../entity/UserRole'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 
-export const getExaminees = (req: Request, res: Response): Promise<Response> => {
+export const getItems = (req: Request, res: Response): Promise<Response> => {
 
     const options: FindManyOptions = defaultFindOptions(req)
 
@@ -19,7 +19,7 @@ export const getExaminees = (req: Request, res: Response): Promise<Response> => 
 
 }
 
-export const updateExaminee = (req: Request, res: Response): Promise<Response> => {
+export const updateItem = (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params
     const { item } = req.body
