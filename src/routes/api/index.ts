@@ -1,40 +1,20 @@
-import { ControllerFunctions } from '../../controller'
+import { controller } from '../../controller'
+import entity from '../../entity'
+import routes from './_helper'
+import examinees from './examinees'
 
-import { Route } from '../interfaces'
-import passport from '../../services/passport'
-import { requireRoles } from '../../services/rolesChecker'
-import { UserRole } from '../../entity/UserRole'
+const categories = routes(`/categories`, controller(entity.Category))
+const exams = routes(`/exams`, controller(entity.Exam))
+const questions = routes(`/questions`, controller(entity.Question))
+const sections = routes(`/sections`, controller(entity.Section))
 
-export const path = (filename: string): string => {
+export default [
 
-    const split = filename.split('/')
-    const modulename = split[split.length - 1]
-    return modulename.split('.')[0]
+    ...categories,
+    ...exams,
+    ...questions,
+    ...sections,
 
-}
+    ...examinees,
 
-export const routes = (path: string, controller: ControllerFunctions): Route[] => {
-
-    const { getItems, addItem, updateItem, deleteItem } = controller
-
-    const pathWithId = `${ path }/:id`
-
-    return [
-        {
-            path: [ path, pathWithId ],
-            method: 'all',
-            authorize: [
-                passport.authenticate('jwt'),
-                requireRoles([UserRole.EXAMINER]),
-            ],
-            actions: []
-        },
-        { path, method: 'get', actions: [ getItems ] },
-        { path, method: 'post', actions: [ addItem ] },
-        { path: pathWithId, method: 'put', actions: [ updateItem ] },
-        { path: pathWithId, method: 'delete', actions: [ deleteItem ] },
-    ]
-
-}
-
-export default routes
+]
