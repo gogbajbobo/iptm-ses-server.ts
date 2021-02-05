@@ -7,6 +7,7 @@ const categories = routes(`/categories`, controller(entity.Category))
 const exams = routes(`/exams`, controller(entity.Exam))
 const questions = routes(`/questions`, controller(entity.Question))
 const sections = routes(`/sections`, controller(entity.Section))
+const answers = routes(`/answers`, controller(entity.Answer))
 
 export default [
 
@@ -14,6 +15,7 @@ export default [
     ...exams,
     ...questions,
     ...sections,
+    ...answers,
 
     ...examinees,
 
