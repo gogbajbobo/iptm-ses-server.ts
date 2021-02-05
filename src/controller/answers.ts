@@ -1,7 +1,7 @@
 import { Answer } from '../entity/Answer'
 import { controller } from './index'
 import { Request, Response } from 'express'
-import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
+import { rejectedClientError, serverError } from './_helper'
 import { FindManyOptions, getRepository } from 'typeorm'
 
 const answerController = controller(Answer)
@@ -36,8 +36,9 @@ const updateAnswer = (req: Request, res: Response): Promise<Response> => {
 
             const { questionId } = answer
 
-            const options: FindManyOptions = defaultFindOptions(req)
-            options.where = { questionId, isCorrect: true }
+            const options: FindManyOptions = {
+                where: { questionId, isCorrect: true }
+            }
 
             return itemRepository.find(options)
                 .then(answers => {
