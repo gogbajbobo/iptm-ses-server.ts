@@ -10,7 +10,9 @@ export class Answer {
     @Column('text')
     text: string
 
-    @Column()
+    @Column({
+        default: false
+    })
     isCorrect: boolean
 
     @Column({ nullable: true })
