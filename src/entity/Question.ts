@@ -10,6 +10,9 @@ export class Question {
     @Column('text')
     text: string
 
+    @Column({ nullable: true })
+    sectionId: number
+
     @ManyToOne(() => Section, section => section.questions)
     section: Section
 
