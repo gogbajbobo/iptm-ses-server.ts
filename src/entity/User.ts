@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm'
 import { Category } from './Category'
 import { UserRole } from './UserRole'
+import { Quiz } from './Quiz'
 
 
 @Entity()
@@ -21,5 +22,8 @@ export class User {
 
     @ManyToMany(() => Category, category => category.users)
     categories: Category[]
+
+    @ManyToMany(() => Quiz, quiz => quiz.examinees)
+    quizzes: Quiz[]
 
 }
