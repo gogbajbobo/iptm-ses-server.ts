@@ -1,11 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Entity, Column, OneToMany } from 'typeorm'
 import { Section } from './Section'
+import { Datum } from './Datum'
 
 @Entity()
-export class Exam {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Exam extends Datum {
 
     @Column()
     title: string

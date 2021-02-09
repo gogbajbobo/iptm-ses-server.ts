@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
 import { Section } from './Section'
 import { Answer } from './Answer'
+import { Datum } from './Datum'
 
 @Entity()
-export class Question {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Question extends Datum {
 
     @Column('text')
     text: string
