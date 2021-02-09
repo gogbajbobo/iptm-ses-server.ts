@@ -12,6 +12,9 @@ export class Section {
     @Column()
     title: string
 
+    @Column()
+    examId: number
+
     @ManyToOne(() => Exam, exam => exam.sections)
     exam: Exam
 
