@@ -15,7 +15,9 @@ export class Section {
     @ManyToOne(() => Exam, exam => exam.sections)
     exam: Exam
 
-    @OneToMany(() => Question, question => question.section)
+    @OneToMany(() => Question, question => question.section, {
+        eager: true,
+    })
     questions: Question[]
 
     @ManyToOne(() => Category, category => category.sections, {
