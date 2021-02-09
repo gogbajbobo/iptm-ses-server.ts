@@ -12,9 +12,7 @@ export class Section {
     @Column()
     title: string
 
-    @ManyToOne(() => Exam, exam => exam.sections, {
-        eager: true
-    })
+    @ManyToOne(() => Exam, exam => exam.sections)
     exam: Exam
 
     @OneToMany(() => Question, question => question.section)

@@ -10,7 +10,9 @@ export class Exam {
     @Column()
     title: string
 
-    @OneToMany(() => Section, section => section.exam)
+    @OneToMany(() => Section, section => section.exam, {
+        eager: true,
+    })
     sections: Section[]
 
 }
