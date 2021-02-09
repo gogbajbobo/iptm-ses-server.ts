@@ -13,7 +13,9 @@ export class Section extends Datum {
     @Column()
     examId: number
 
-    @ManyToOne(() => Exam, exam => exam.sections)
+    @ManyToOne(() => Exam, exam => exam.sections, {
+        onDelete: 'CASCADE',
+    })
     exam: Exam
 
     @OneToMany(() => Question, question => question.section, {

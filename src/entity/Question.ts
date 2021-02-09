@@ -12,7 +12,9 @@ export class Question extends Datum {
     @Column({ nullable: true })
     sectionId: number
 
-    @ManyToOne(() => Section, section => section.questions)
+    @ManyToOne(() => Section, section => section.questions, {
+        onDelete: 'CASCADE',
+    })
     section: Section
 
     @OneToMany(() => Answer, answer => answer.question, {

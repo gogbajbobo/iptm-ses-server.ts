@@ -16,7 +16,9 @@ export class Answer extends Datum {
     @Column({ nullable: true })
     questionId: number
 
-    @ManyToOne(() => Question, question => question.answers)
+    @ManyToOne(() => Question, question => question.answers, {
+        onDelete: 'CASCADE',
+    })
     question: Question
 
 }
