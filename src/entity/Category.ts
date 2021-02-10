@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, Column, OneToMany, ManyToMany, JoinTable, RelationId } from 'typeorm'
 import { User } from './User'
 import { Section } from './Section'
 import { Datum } from './Datum'
@@ -12,6 +12,9 @@ export class Category extends Datum {
     @ManyToMany(() => User, user => user.categories)
     @JoinTable()
     users: User[]
+
+    @RelationId((category: Category) => category.users)
+    userIds: number[]
 
     @OneToMany(() => Section, section => section.category)
     sections: Section[]
