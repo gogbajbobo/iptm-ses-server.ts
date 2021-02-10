@@ -1,4 +1,4 @@
-import {Entity, Column, OneToMany, ManyToOne, RelationId} from 'typeorm'
+import { Entity, Column, OneToMany, ManyToOne, RelationId } from 'typeorm'
 import { Exam } from './Exam'
 import { Question } from './Question'
 import { Category } from './Category'
