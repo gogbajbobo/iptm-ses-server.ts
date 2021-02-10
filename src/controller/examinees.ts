@@ -6,11 +6,19 @@ import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 
 export const getItems = (req: Request, res: Response): Promise<Response> => {
 
+    const { query } = req
+
     const options: FindManyOptions = defaultFindOptions(req)
 
-    options.where = {
+    const examineeWhere = {
         roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
     }
+
+    const categoryWhere = {
+        // categories: Raw(alias => `FIND_IN_SET('${ query?.category }',${ alias })>0`)
+    }
+
+    options.where = query?.category ? { ...examineeWhere, ...categoryWhere } : { ...examineeWhere }
 
     return getRepository(User).find(options)
         .then(items => res.json(items))
