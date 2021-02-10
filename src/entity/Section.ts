@@ -12,6 +12,7 @@ export class Section extends Datum {
 
     @ManyToOne(() => Exam, exam => exam.sections, {
         onDelete: 'CASCADE',
+        eager: true,
     })
     exam: Exam
 
