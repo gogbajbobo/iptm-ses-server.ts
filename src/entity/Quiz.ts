@@ -1,13 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Category } from './Category'
 import { Exam } from './Exam'
 import { User } from './User'
+import { Datum } from './Datum'
 
 @Entity()
-export class Quiz {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Quiz extends Datum {
 
     @Column('text')
     text: string

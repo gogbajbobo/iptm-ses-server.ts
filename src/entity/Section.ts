@@ -1,23 +1,26 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, Column, OneToMany, ManyToOne } from 'typeorm'
 import { Exam } from './Exam'
 import { Question } from './Question'
 import { Category } from './Category'
+import { Datum } from './Datum'
 
 @Entity()
-export class Section {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Section extends Datum {
 
     @Column()
     title: string
 
+    @Column()
+    examId: number
+
     @ManyToOne(() => Exam, exam => exam.sections, {
-        eager: true
+        onDelete: 'CASCADE',
     })
     exam: Exam
 
-    @OneToMany(() => Question, question => question.section)
+    @OneToMany(() => Question, question => question.section, {
+        eager: true,
+    })
     questions: Question[]
 
     @ManyToOne(() => Category, category => category.sections, {

@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
 import { Section } from './Section'
 import { Answer } from './Answer'
+import { Datum } from './Datum'
 
 @Entity()
-export class Question {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Question extends Datum {
 
     @Column('text')
     text: string
@@ -14,10 +12,14 @@ export class Question {
     @Column({ nullable: true })
     sectionId: number
 
-    @ManyToOne(() => Section, section => section.questions)
+    @ManyToOne(() => Section, section => section.questions, {
+        onDelete: 'CASCADE',
+    })
     section: Section
 
-    @OneToMany(() => Answer, answer => answer.question)
+    @OneToMany(() => Answer, answer => answer.question, {
+        eager: true,
+    })
     answers: Answer[]
 
 }

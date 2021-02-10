@@ -7,6 +7,7 @@ export const defaultFindOptions = (req: Request): FindManyOptions => {
     const options: FindManyOptions = req.body.options || {}
 
     if (!options.take) options.take = 100
+    if (!options.order) options.order = { id: 'ASC' }
 
     return options
 
