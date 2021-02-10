@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm'
+import { Entity, Column, OneToMany, RelationId } from 'typeorm'
 import { Section } from './Section'
 import { Datum } from './Datum'
 
@@ -8,9 +8,10 @@ export class Exam extends Datum {
     @Column()
     title: string
 
-    @OneToMany(() => Section, section => section.exam, {
-        eager: true,
-    })
+    @OneToMany(() => Section, section => section.exam)
     sections: Section[]
+
+    @RelationId((exam: Exam) => exam.sections)
+    sectionIds: number[]
 
 }
