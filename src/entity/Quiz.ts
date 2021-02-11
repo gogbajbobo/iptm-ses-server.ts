@@ -1,5 +1,6 @@
-import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, ManyToOne, ManyToMany, RelationId } from 'typeorm'
 import { Category } from './Category'
+import { Section } from './Section'
 import { Exam } from './Exam'
 import { User } from './User'
 import { Datum } from './Datum'
@@ -7,23 +8,24 @@ import { Datum } from './Datum'
 @Entity()
 export class Quiz extends Datum {
 
-    @Column('text')
-    text: string
-
-    @Column()
-    examId: number
+    @ManyToOne(() => Category)
+    category: Category
+    // @RelationId((quiz: Quiz) => quiz.category)
+    // categoryId: number
 
     @ManyToOne(() => Exam)
     exam: Exam
+    // @RelationId((quiz: Quiz) => quiz.exam)
+    // examId: number
 
-    @Column()
-    categoryId: number
-
-    @ManyToOne(() => Category)
-    category: Category
+    @ManyToOne(() => Section, {
+        eager: true,
+    })
+    section: Section
 
     @ManyToMany(() => User, user => user.quizzes)
-    @JoinTable()
     examinees: User[]
+    // @RelationId((quiz: Quiz) => quiz.examinees)
+    // examineeIds: number[]
 
 }
