@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
-import { getRepository, FindManyOptions, Raw, In } from 'typeorm'
+import { getRepository, FindManyOptions, Raw } from 'typeorm'
 import { User } from '../entity/User'
-import { Category } from '../entity/Category'
 import { UserRole } from '../entity/UserRole'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 
 export const getItems = (req: Request, res: Response): Promise<Response> => {
+
+    const userRepository = getRepository(User)
 
     const { query } = req
 
@@ -15,33 +16,29 @@ export const getItems = (req: Request, res: Response): Promise<Response> => {
         roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
     }
 
-    // if (!query?.category) {
+    if (!query?.categories) {
 
         options.where = examineeWhere
 
-        return getRepository(User).find(options)
+        return userRepository.find(options)
             .then(items => res.json(items))
             .catch(err => res.status(500).json({ error: err.message }))
 
-    // }
+    }
 
-    // const category = query.category as string
-    //
-    // if (!category)
-    //     return rejectedClientError(res, 'have no category in query')
-    //
-    // return getRepository(Category).findOne(category)
-    //     .then(cat => {
-    //
-    //         const { userIds } = cat
-    //
-    //         options.where = { ...examineeWhere, id: In(userIds) }
-    //
-    //         return getRepository(User).find(options)
-    //             .then(items => res.json(items))
-    //             .catch(err => res.status(500).json({ error: err.message }))
-    //
-    //     })
+    const categories = query.categories as string
+
+    if (!categories)
+        return rejectedClientError(res, 'have no categories in query')
+
+    return userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.categories', 'category')
+        .where(examineeWhere)
+        .andWhere('category.id in (:categories)', { categories })
+        .getMany()
+        .then(items => res.json(items))
+        .catch(err => res.status(500).json({ error: err.message }))
 
 }
 
