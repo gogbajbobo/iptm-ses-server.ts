@@ -4,20 +4,19 @@ import { User } from '../entity/User'
 import { UserRole } from '../entity/UserRole'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 
+const examineeWhere = {
+    roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
+}
+
 export const getItems = (req: Request, res: Response): Promise<Response> => {
 
     const userRepository = getRepository(User)
 
     const { query } = req
 
-    const options: FindManyOptions = defaultFindOptions(req)
-
-    const examineeWhere = {
-        roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
-    }
-
     if (!query?.categories) {
 
+        const options: FindManyOptions = defaultFindOptions(req)
         options.where = examineeWhere
 
         return userRepository.find(options)
