@@ -30,11 +30,13 @@ export const getItems = (req: Request, res: Response): Promise<Response> => {
     if (!categories)
         return rejectedClientError(res, 'have no categories in query')
 
+    const categoryIds = categories.split(',').map(Number)
+
     return userRepository
         .createQueryBuilder('user')
         .leftJoinAndSelect('user.categories', 'category')
         .where(examineeWhere)
-        .andWhere('category.id in (:categories)', { categories })
+        .andWhere('category.id IN (:categoryIds)', { categoryIds })
         .getMany()
         .then(items => res.json(items))
         .catch(err => res.status(500).json({ error: err.message }))
