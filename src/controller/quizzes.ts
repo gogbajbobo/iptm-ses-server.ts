@@ -10,6 +10,8 @@ const quizController = controller(Quiz)
 
 const getItems = (req: Request, res: Response): Promise<Response> => {
 
+    const quizRepository = getRepository(Quiz)
+
     const { query } = req
     const user: User = req.user as User
 
@@ -18,7 +20,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
         const options: FindManyOptions = defaultFindOptions(req)
         options.where = query
 
-        return getRepository(Quiz).find(options)
+        return quizRepository.find(options)
             .then(items => res.json(items))
             .catch(serverError(res))
 
@@ -26,15 +28,14 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
     if (user.roles.includes(UserRole.EXAMINEE)) {
 
-        const options: FindManyOptions = defaultFindOptions(req)
-
-        options.where = {
-            examinees: Raw(alias => `FIND_IN_SET('${ user.id }',${ alias })>0`)
-        }
-
-        return getRepository(Quiz).find(options)
+        return quizRepository
+            .createQueryBuilder('quiz')
+            .leftJoinAndSelect('quiz.exam', 'exam')
+            .leftJoin('quiz.examinees', 'examinee')
+            .where('examinee.id = :userId', { userId: user.id })
+            .getMany()
             .then(items => res.json(items))
-            .catch(serverError(res))
+            .catch(err => res.status(500).json({ error: err.message }))
 
     }
 
