@@ -6,7 +6,9 @@ import { Datum } from './Datum'
 @Entity()
 export class Quiz extends Datum {
 
-    @ManyToOne(() => Exam)
+    @ManyToOne(() => Exam, {
+        eager: true,
+    })
     exam: Exam
     @RelationId((quiz: Quiz) => quiz.exam)
     examId: number
