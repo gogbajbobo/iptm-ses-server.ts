@@ -15,7 +15,7 @@ export const getItems = (req: Request, res: Response): Promise<Response> => {
         roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
     }
 
-    if (!query?.category) {
+    // if (!query?.category) {
 
         options.where = examineeWhere
 
@@ -23,25 +23,25 @@ export const getItems = (req: Request, res: Response): Promise<Response> => {
             .then(items => res.json(items))
             .catch(err => res.status(500).json({ error: err.message }))
 
-    }
+    // }
 
-    const category = query.category as string
-
-    if (!category)
-        return rejectedClientError(res, 'have no category in query')
-
-    return getRepository(Category).findOne(category)
-        .then(cat => {
-
-            const { userIds } = cat
-
-            options.where = { ...examineeWhere, id: In(userIds) }
-
-            return getRepository(User).find(options)
-                .then(items => res.json(items))
-                .catch(err => res.status(500).json({ error: err.message }))
-
-        })
+    // const category = query.category as string
+    //
+    // if (!category)
+    //     return rejectedClientError(res, 'have no category in query')
+    //
+    // return getRepository(Category).findOne(category)
+    //     .then(cat => {
+    //
+    //         const { userIds } = cat
+    //
+    //         options.where = { ...examineeWhere, id: In(userIds) }
+    //
+    //         return getRepository(User).find(options)
+    //             .then(items => res.json(items))
+    //             .catch(err => res.status(500).json({ error: err.message }))
+    //
+    //     })
 
 }
 
