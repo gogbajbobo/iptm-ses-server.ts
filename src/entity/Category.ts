@@ -13,8 +13,8 @@ export class Category extends Datum {
     @JoinTable()
     users: User[]
 
-    @RelationId((category: Category) => category.users)
-    userIds: number[]
+    // @RelationId((category: Category) => category.users)
+    // userIds: number[]
 
     @OneToMany(() => Section, section => section.category)
     sections: Section[]
