@@ -4,6 +4,7 @@ import quizController from '../../controller/quizzes'
 import entity from '../../entity'
 import routes from './_helper'
 import examinees from './examinees'
+import recreateExams from './recreateExams'
 import { UserRole } from '../../entity/UserRole'
 
 const categories = routes(`/categories`, controller(entity.Category))
@@ -30,5 +31,6 @@ export default [
     ...answers,
     ...quizzes,
     ...examinees,
+    ...recreateExams,
 
 ]
