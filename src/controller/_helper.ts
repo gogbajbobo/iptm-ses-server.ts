@@ -4,6 +4,7 @@ import { log } from '../services/logger'
 
 export const defaultFindOptions = (req: Request): FindManyOptions => {
 
+    // TODO: GET request should not have 'body'
     const options: FindManyOptions = req.body.options || {}
 
     if (!options.take) options.take = 100

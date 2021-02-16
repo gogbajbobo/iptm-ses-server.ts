@@ -17,7 +17,9 @@ export class User extends Datum {
     })
     roles: UserRole[]
 
-    @ManyToMany(() => Category, category => category.users)
+    @ManyToMany(() => Category, category => category.users, {
+        eager: true,
+    })
     categories: Category[]
 
     @ManyToMany(() => Quiz, quiz => quiz.examinees)

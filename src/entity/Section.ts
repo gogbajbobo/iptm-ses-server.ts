@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, Column, OneToMany, ManyToOne, RelationId } from 'typeorm'
 import { Exam } from './Exam'
 import { Question } from './Question'
 import { Category } from './Category'
@@ -10,18 +10,20 @@ export class Section extends Datum {
     @Column()
     title: string
 
-    @Column()
-    examId: number
-
     @ManyToOne(() => Exam, exam => exam.sections, {
         onDelete: 'CASCADE',
+        eager: true,
     })
     exam: Exam
 
-    @OneToMany(() => Question, question => question.section, {
-        eager: true,
-    })
+    @RelationId((section: Section) => section.exam)
+    examId: number
+
+    @OneToMany(() => Question, question => question.section)
     questions: Question[]
+
+    @RelationId((section: Section) => section.questions)
+    questionIds: number[]
 
     @ManyToOne(() => Category, category => category.sections, {
         eager: true

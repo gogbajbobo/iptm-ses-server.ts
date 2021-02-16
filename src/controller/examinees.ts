@@ -4,16 +4,40 @@ import { User } from '../entity/User'
 import { UserRole } from '../entity/UserRole'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 
+const examineeWhere = {
+    roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
+}
+
 export const getItems = (req: Request, res: Response): Promise<Response> => {
 
-    const options: FindManyOptions = defaultFindOptions(req)
+    const userRepository = getRepository(User)
 
-    options.where = {
-        roles: Raw(alias => `FIND_IN_SET('${ UserRole.EXAMINEE }',${ alias })>0`)
+    const { query } = req
+
+    if (!query?.categories) {
+
+        const options: FindManyOptions = defaultFindOptions(req)
+        options.where = examineeWhere
+
+        return userRepository.find(options)
+            .then(items => res.json(items))
+            .catch(err => res.status(500).json({ error: err.message }))
+
     }
-    options.relations = [ 'categories' ]
 
-    return getRepository(User).find(options)
+    const categories = query.categories as string
+
+    if (!categories)
+        return rejectedClientError(res, 'have no categories in query')
+
+    const categoryIds = categories.split(',').map(Number)
+
+    return userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.categories', 'category')
+        .where(examineeWhere)
+        .andWhere('category.id IN (:categoryIds)', { categoryIds })
+        .getMany()
         .then(items => res.json(items))
         .catch(err => res.status(500).json({ error: err.message }))
 

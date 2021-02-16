@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToMany, RelationId } from 'typeorm'
 import { Section } from './Section'
 import { Answer } from './Answer'
 import { Datum } from './Datum'
@@ -9,13 +9,13 @@ export class Question extends Datum {
     @Column('text')
     text: string
 
-    @Column({ nullable: true })
-    sectionId: number
-
     @ManyToOne(() => Section, section => section.questions, {
         onDelete: 'CASCADE',
     })
     section: Section
+
+    @RelationId((question: Question) => question.section)
+    sectionId: number
 
     @OneToMany(() => Answer, answer => answer.question, {
         eager: true,
