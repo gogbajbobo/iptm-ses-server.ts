@@ -37,6 +37,15 @@ const testExams = [
     { title: 'Экзамен по сосудам' },
 ]
 
+const getRandomInt = (min, max) => {
+
+    const _min = Math.ceil(min)
+    const _max = Math.floor(max)
+
+    return Math.floor(Math.random() * (_max - _min) + _min)
+
+}
+
 // this method recreate dummy exams for testing purpose only
 // do not use it in production mode
 export const recreateExams = (req: Request, res: Response): Promise<Response> => {
@@ -68,11 +77,40 @@ export const recreateExams = (req: Request, res: Response): Promise<Response> =>
                     return [1, 2, 3, 4, 5].map(n => {
                         return { title: `Секция ${ id }.${ n }`, exam: { id }, category: { id: n } }
                     })
-                return { title: `Секция ${ id }.1`, exam: { id }, category: { id: 1 } }
+                return { title: `Секция ${ id }.1`, exam: { id }, category: { id } }
 
             }).flat()
 
             return sectionRepository.save(testSections)
+                .then(() => examRepository.find({ relations: ['sections'] }))
+
+        })
+        .then(exams => {
+
+            const testQuestions = exams.map(exam => {
+
+                const et = exam.title
+
+                return exam.sections.map(section => {
+
+                    const st = section.title
+                    const ct = section.category.title
+                    const numberOfQuestions = getRandomInt(20, 30)
+                    const questionNumbers = [ ...Array(numberOfQuestions).keys() ]
+
+                    return questionNumbers.map(qn => {
+
+                        const questionName = `Вопрос №${ qn + 1 }: ${ et } / ${ st } / ${ ct }`
+                        return { text: questionName, section }
+
+                    }).flat()
+
+                }).flat()
+
+            }).flat()
+
+            return questionRepository.save(testQuestions)
+                .then(result => console.log(result))
 
         })
         .then(() => {
