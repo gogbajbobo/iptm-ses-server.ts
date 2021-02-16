@@ -110,6 +110,25 @@ export const recreateExams = (req: Request, res: Response): Promise<Response> =>
             }).flat()
 
             return questionRepository.save(testQuestions)
+
+        })
+        .then(questions => {
+
+            const testAnswers = questions.map(question => {
+
+                const numberOfAnswers = getRandomInt(3, 6)
+                const answerNumbers = [ ...Array(numberOfAnswers).keys() ]
+
+                return answerNumbers.map((an, index) => {
+
+                    const answerName = `Ответ №${ an + 1 }`
+                    return { text: answerName, isCorrect: index === 0, question }
+
+                })
+
+            }).flat()
+
+            return answerRepository.save(testAnswers)
                 .then(result => console.log(result))
 
         })
