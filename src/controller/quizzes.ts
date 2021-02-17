@@ -1,10 +1,10 @@
 import { Quiz } from '../entity/Quiz'
 import { User } from '../entity/User'
-import { UserRole } from '../entity/UserRole'
 import { controller } from './index'
 import { Request, Response } from 'express'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
-import {FindManyOptions, getRepository, Raw} from 'typeorm'
+import { isExaminer, isExaminee } from '../services/helper'
+import { FindManyOptions, getRepository } from 'typeorm'
 
 const quizController = controller(Quiz)
 
@@ -15,7 +15,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
     const { query } = req
     const user: User = req.user as User
 
-    if (user.roles.includes(UserRole.EXAMINER)) {
+    if (isExaminer(user)) {
 
         const options: FindManyOptions = defaultFindOptions(req)
         options.where = query
@@ -26,7 +26,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
     }
 
-    if (user.roles.includes(UserRole.EXAMINEE)) {
+    if (isExaminee(user)) {
 
         return quizRepository
             .createQueryBuilder('quiz')

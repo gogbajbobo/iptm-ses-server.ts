@@ -8,6 +8,7 @@ import { Exam } from '../entity/Exam'
 import { Section } from '../entity/Section'
 import { Question } from '../entity/Question'
 import { Answer } from '../entity/Answer'
+import { isAdmin } from '../services/helper'
 
 interface UserEmbryo {
     username: string
@@ -52,7 +53,7 @@ export const recreateExams = (req: Request, res: Response): Promise<Response> =>
 
     const user: User = req.user as User
 
-    if (!user.roles.includes(UserRole.ADMIN))
+    if (!isAdmin(user))
         return rejectedClientError(res, 'You should be admin but you are not')
 
     const connection = getConnection()
