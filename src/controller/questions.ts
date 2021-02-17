@@ -1,6 +1,8 @@
 import { controller } from './index'
 import { Question } from '../entity/Question'
 import { User } from '../entity/User'
+import { Quiz } from '../entity/Quiz'
+import { Exam } from '../entity/Exam'
 import { Request, Response } from 'express'
 import { FindManyOptions, getRepository } from 'typeorm'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
@@ -19,7 +21,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
     const { quiz } = query
 
     if (quiz && isExaminee(user))
-        return getQuestionsForExaminee(req, res, Number(quiz))
+        return getQuestionsForExaminee(req, res, Number(quiz), user)
 
     if (isExaminer(user))
         return getQuestionsForExaminer(req, res)
@@ -28,7 +30,20 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
-const getQuestionsForExaminee = (req: Request, res: Response, quizId: number): Promise<Response> => {
+const getQuestionsForExaminee = (req: Request, res: Response, quizId: number, user: User): Promise<Response> => {
+
+    getRepository(Quiz).findOne(quizId)
+        .then(quiz => {
+
+            return getRepository(Exam)
+                .createQueryBuilder('exam')
+                .leftJoinAndSelect('exam.sections', 'section')
+                .where({ id: quiz.examId })
+                .getOne()
+
+        })
+        .then(console.log)
+        .catch(console.error)
 
     const options: FindManyOptions = defaultFindOptions(req)
     // options.where = query
