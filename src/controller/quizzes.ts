@@ -10,36 +10,41 @@ const quizController = controller(Quiz)
 
 const getItems = (req: Request, res: Response): Promise<Response> => {
 
-    const quizRepository = getRepository(Quiz)
-
-    const { query } = req
     const user: User = req.user as User
 
-    if (isExaminer(user)) {
+    if (isExaminer(user))
+        return getQuizzesForExaminer(req, res)
 
-        const options: FindManyOptions = defaultFindOptions(req)
-        options.where = query
-
-        return quizRepository.find(options)
-            .then(items => res.json(items))
-            .catch(serverError(res))
-
-    }
-
-    if (isExaminee(user)) {
-
-        return quizRepository
-            .createQueryBuilder('quiz')
-            .leftJoinAndSelect('quiz.exam', 'exam')
-            .leftJoin('quiz.examinees', 'examinee')
-            .where('examinee.id = :userId', { userId: user.id })
-            .getMany()
-            .then(items => res.json(items))
-            .catch(err => res.status(500).json({ error: err.message }))
-
-    }
+    if (isExaminee(user))
+        return getQuizzesForExaminee(req, res, user)
 
     return rejectedClientError(res, 'unknown user role')
+
+}
+
+const getQuizzesForExaminer = (req: Request, res: Response): Promise<Response> => {
+
+    const options: FindManyOptions = defaultFindOptions(req)
+
+    const { query } = req
+    options.where = query
+
+    return getRepository(Quiz).find(options)
+        .then(items => res.json(items))
+        .catch(serverError(res))
+
+}
+
+const getQuizzesForExaminee = (req: Request, res: Response, user: User): Promise<Response> => {
+
+    return getRepository(Quiz)
+        .createQueryBuilder('quiz')
+        .leftJoinAndSelect('quiz.exam', 'exam')
+        .leftJoin('quiz.examinees', 'examinee')
+        .where('examinee.id = :userId', { userId: user.id })
+        .getMany()
+        .then(items => res.json(items))
+        .catch(err => res.status(500).json({ error: err.message }))
 
 }
 
