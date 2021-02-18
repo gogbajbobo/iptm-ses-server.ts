@@ -31,8 +31,8 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
-type NOfQType = Record<'section' | 'numberOfQuestions', number>[]
-const getNumberOfQuestions = (user: User, exam: Exam): NOfQType => {
+type NOfQType = Record<'section' | 'numberOfQuestions', number>
+const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
 
     const userCategoryIds = user.categoryIds
     const examCategoryIds = exam.sections.map(s => s.categoryId)
@@ -42,7 +42,7 @@ const getNumberOfQuestions = (user: User, exam: Exam): NOfQType => {
 
     const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
 
-    return sectionIds.reduce((result: NOfQType, sId, i) => {
+    const numberOfQuestions: NOfQType[] = sectionIds.reduce((result: NOfQType[], sId, i) => {
 
         const addition = i < questionsInSection.reminder ? 1 : 0
         result[i] = { section: sId, numberOfQuestions: questionsInSection.quotient + addition }
@@ -50,6 +50,9 @@ const getNumberOfQuestions = (user: User, exam: Exam): NOfQType => {
         return result
 
     }, [])
+
+
+    return numberOfQuestions
 
 }
 
