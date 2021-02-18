@@ -53,6 +53,24 @@ function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
 
 }
 
+function getQuestionsForQuiz(result: Record<'section' | 'numberOfQuestions', number>[]) {
+
+    const promises = result.map(r => {
+
+        return getRepository(Question)
+            .createQueryBuilder('question')
+            .where(`sectionId = :section`, {section: r.section})
+            .leftJoinAndSelect('question.answers', 'answer')
+            .orderBy('RAND()')
+            .limit(r.numberOfQuestions)
+            .getMany()
+
+    })
+
+    return Promise.all(promises)
+
+}
+
 const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response> => {
 
     const { query } = req
@@ -65,6 +83,7 @@ const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response>
             return getRepository(Exam)
                 .findOne(quiz.examId, { relations: [ 'sections' ] })
                 .then(exam => getNumberOfQuestions(user, exam))
+                .then(result => getQuestionsForQuiz(result))
 
         })
         .then(console.log)
