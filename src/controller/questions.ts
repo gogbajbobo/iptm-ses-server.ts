@@ -22,7 +22,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
     const { quiz } = query
 
     if (quiz && isExaminee(user))
-        return getQuestionsForExaminee(req, res, Number(quiz), user)
+        return getQuestionsForExaminee(req, res)
 
     if (isExaminer(user))
         return getQuestionsForExaminer(req, res)
@@ -31,7 +31,11 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
-const getQuestionsForExaminee = (req: Request, res: Response, quizId: number, user: User): Promise<Response> => {
+const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response> => {
+
+    const { query } = req
+    const quizId = Number(query.quiz)
+    const user: User = req.user as User
 
     getRepository(Quiz).findOne(quizId)
         .then(quiz => {
