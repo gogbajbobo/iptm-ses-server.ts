@@ -81,7 +81,7 @@ const getQuestionsForQuiz = (result: Record<'section' | 'numberOfQuestions', num
             .where(`sectionId = :section`, {section: r.section})
             .leftJoinAndSelect('question.answers', 'answer')
             .orderBy('RAND()')
-            .limit(r.numberOfQuestions)
+            .take(r.numberOfQuestions)
             .getMany()
 
     })
