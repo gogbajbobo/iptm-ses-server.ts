@@ -27,5 +27,7 @@ export class Section extends Datum {
         eager: true
     })
     category: Category
+    @RelationId((section: Section) => section.category)
+    categoryId: number
 
 }
