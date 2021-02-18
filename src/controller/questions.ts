@@ -71,10 +71,7 @@ const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response>
         .then(quiz => {
 
             return getRepository(Exam)
-                .createQueryBuilder('exam')
-                .where({ id: quiz.examId })
-                .leftJoinAndSelect('exam.sections', 'section')
-                .getOne()
+                .findOne(quiz.examId, { relations: [ 'sections' ] })
                 .then(exam => getNumberOfQuestions(user, exam))
 
         })
