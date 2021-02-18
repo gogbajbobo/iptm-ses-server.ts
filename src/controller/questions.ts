@@ -33,20 +33,6 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 }
 
 type NOfQType = Record<'section' | 'numberOfQuestions', number>
-
-const checkNumbers = (numberOfQuestions: NOfQType[]) => {
-
-    const testValue = numberOfQuestions.reduce((result, nq) => {
-        return result + nq.numberOfQuestions
-    }, 0)
-
-    if (testValue !== NUMBER_OF_QUESTIONS)
-        log.error(`Invalid number of questions`)
-
-    log.info(JSON.stringify(numberOfQuestions, null, '\t'))
-
-}
-
 const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
 
     const userCategoryIds = user.categoryIds
@@ -57,7 +43,7 @@ const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
 
     const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
 
-    const numberOfQuestions: NOfQType[] = sectionIds.reduce((result: NOfQType[], sId, i) => {
+    return sectionIds.reduce((result: NOfQType[], sId, i) => {
 
         const addition = i < questionsInSection.reminder ? 1 : 0
         result[i] = { section: sId, numberOfQuestions: questionsInSection.quotient + addition }
@@ -65,10 +51,6 @@ const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
         return result
 
     }, [])
-
-    checkNumbers(numberOfQuestions)
-
-    return numberOfQuestions
 
 }
 
