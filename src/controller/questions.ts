@@ -8,6 +8,7 @@ import { FindManyOptions, getRepository } from 'typeorm'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
 import {arrayIntersect, intDivision, isExaminee, isExaminer} from '../services/helper'
 import { NUMBER_OF_QUESTIONS } from '../services/constants'
+import { log } from '../services/logger'
 
 const questionController = controller(Question)
 
@@ -32,6 +33,20 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 }
 
 type NOfQType = Record<'section' | 'numberOfQuestions', number>
+
+const checkNumbers = (numberOfQuestions: NOfQType[]) => {
+
+    const testValue = numberOfQuestions.reduce((result, nq) => {
+        return result + nq.numberOfQuestions
+    }, 0)
+
+    if (testValue !== NUMBER_OF_QUESTIONS)
+        log.error(`Invalid number of questions`)
+
+    log.info(JSON.stringify(numberOfQuestions, null, '\t'))
+
+}
+
 const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
 
     const userCategoryIds = user.categoryIds
@@ -51,6 +66,7 @@ const getNumberOfQuestions = (user: User, exam: Exam): NOfQType[] => {
 
     }, [])
 
+    checkNumbers(numberOfQuestions)
 
     return numberOfQuestions
 
