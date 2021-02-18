@@ -31,6 +31,36 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
+function getNumberOfQuestions(user: User, exam: Exam) {
+
+    const userCategoryIds = user.categoryIds
+    const examCategoryIds = exam.sections.map(s => s.categoryId)
+    const catIds = arrayIntersect(userCategoryIds, examCategoryIds)
+    const sections = exam.sections.filter(s => catIds.includes(s.categoryId))
+    const sectionIds = sections.map(s => s.id)
+
+    const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
+
+    const numberOfQuestions = sectionIds.reduce((result, sId, i) => {
+
+        const addition = i < questionsInSection.reminder ? 1 : 0
+        result[i] = {section: sId, numberOfQuestion: questionsInSection.quotient + addition}
+
+        return result
+
+    }, [])
+
+    return {
+        userCategoryIds,
+        examCategoryIds,
+        catIds,
+        sectionIds,
+        questionsInSection,
+        numberOfQuestions
+    }
+
+}
+
 const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response> => {
 
     const { query } = req
@@ -45,35 +75,7 @@ const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response>
                 .where({ id: quiz.examId })
                 .leftJoinAndSelect('exam.sections', 'section')
                 .getOne()
-                .then(exam => {
-
-                    const userCategoryIds = user.categoryIds
-                    const examCategoryIds = exam.sections.map(s => s.categoryId)
-                    const catIds = arrayIntersect(userCategoryIds, examCategoryIds)
-                    const sections = exam.sections.filter(s => catIds.includes(s.categoryId))
-                    const sectionIds = sections.map(s => s.id)
-
-                    const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
-
-                    const numberOfQuestions = sectionIds.reduce((result, sId, i) => {
-
-                        const addition = i < questionsInSection.reminder ? 1 : 0
-                        result[i] = { section: sId, numberOfQuestion: questionsInSection.quotient + addition }
-
-                        return result
-
-                    }, [])
-
-                    return {
-                        userCategoryIds,
-                        examCategoryIds,
-                        catIds,
-                        sectionIds,
-                        questionsInSection,
-                        numberOfQuestions
-                    }
-
-                })
+                .then(exam => getNumberOfQuestions(user, exam))
 
         })
         .then(console.log)
