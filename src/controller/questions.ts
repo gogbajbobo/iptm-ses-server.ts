@@ -51,7 +51,23 @@ const getQuestionsForExaminee = (req: Request, res: Response, quizId: number, us
 
                     const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
 
-                    return { userCategoryIds, examCategoryIds, catIds, sectionIds, questionsInSection }
+                    const numberOfQuestions = sectionIds.reduce((result, sId, i) => {
+
+                        const addition = i < questionsInSection.reminder ? 1 : 0
+                        result[i] = { section: sId, numberOfQuestion: questionsInSection.quotient + addition }
+
+                        return result
+
+                    }, [])
+
+                    return {
+                        userCategoryIds,
+                        examCategoryIds,
+                        catIds,
+                        sectionIds,
+                        questionsInSection,
+                        numberOfQuestions
+                    }
 
                 })
 
