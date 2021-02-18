@@ -6,7 +6,7 @@ import { Exam } from '../entity/Exam'
 import { Request, Response } from 'express'
 import { FindManyOptions, getRepository } from 'typeorm'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
-import { isExaminee, isExaminer } from '../services/helper'
+import { arrayIntersect, isExaminee, isExaminer } from '../services/helper'
 
 const questionController = controller(Question)
 
@@ -37,9 +37,18 @@ const getQuestionsForExaminee = (req: Request, res: Response, quizId: number, us
 
             return getRepository(Exam)
                 .createQueryBuilder('exam')
-                .leftJoinAndSelect('exam.sections', 'section')
                 .where({ id: quiz.examId })
+                .leftJoinAndSelect('exam.sections', 'section')
                 .getOne()
+                .then(exam => {
+
+                    const userCategoryIds = user.categoryIds
+                    const examCategoryIds = exam.sections.map(s => s.categoryId)
+                    const categoryIds = arrayIntersect(userCategoryIds, examCategoryIds)
+
+                    return { userCategoryIds, examCategoryIds, categoryIds }
+
+                })
 
         })
         .then(console.log)
