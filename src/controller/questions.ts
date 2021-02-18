@@ -31,7 +31,8 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 
 }
 
-function getNumberOfQuestions(user: User, exam: Exam) {
+type NOfQType = Record<'section' | 'numberOfQuestions', number>[]
+function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
 
     const userCategoryIds = user.categoryIds
     const examCategoryIds = exam.sections.map(s => s.categoryId)
