@@ -10,7 +10,6 @@ export class Exam extends Datum {
 
     @OneToMany(() => Section, section => section.exam)
     sections: Section[]
-
     @RelationId((exam: Exam) => exam.sections)
     sectionIds: number[]
 
