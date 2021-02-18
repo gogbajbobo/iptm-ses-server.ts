@@ -42,7 +42,7 @@ function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
 
     const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
 
-    const numberOfQuestions = sectionIds.reduce((result, sId, i) => {
+    return sectionIds.reduce((result: NOfQType, sId, i) => {
 
         const addition = i < questionsInSection.reminder ? 1 : 0
         result[i] = { section: sId, numberOfQuestions: questionsInSection.quotient + addition }
@@ -50,15 +50,6 @@ function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
         return result
 
     }, [])
-
-    return {
-        userCategoryIds,
-        examCategoryIds,
-        catIds,
-        sectionIds,
-        questionsInSection,
-        numberOfQuestions
-    }
 
 }
 
