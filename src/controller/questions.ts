@@ -44,7 +44,7 @@ function getNumberOfQuestions(user: User, exam: Exam) {
     const numberOfQuestions = sectionIds.reduce((result, sId, i) => {
 
         const addition = i < questionsInSection.reminder ? 1 : 0
-        result[i] = {section: sId, numberOfQuestion: questionsInSection.quotient + addition}
+        result[i] = { section: sId, numberOfQuestions: questionsInSection.quotient + addition }
 
         return result
 
