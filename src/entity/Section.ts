@@ -15,13 +15,11 @@ export class Section extends Datum {
         eager: true,
     })
     exam: Exam
-
     @RelationId((section: Section) => section.exam)
     examId: number
 
     @OneToMany(() => Question, question => question.section)
     questions: Question[]
-
     @RelationId((section: Section) => section.questions)
     questionIds: number[]
 
