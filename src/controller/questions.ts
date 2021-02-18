@@ -80,7 +80,7 @@ const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response>
     const quizId = Number(query.quiz)
     const user: User = req.user as User
 
-    getRepository(Quiz).findOne(quizId)
+    return getRepository(Quiz).findOne(quizId)
         .then(quiz => {
 
             return getRepository(Exam)
@@ -89,13 +89,7 @@ const getQuestionsForExaminee = (req: Request, res: Response): Promise<Response>
                 .then(result => getQuestionsForQuiz(result))
 
         })
-        .then(console.log)
-        .catch(console.error)
-
-    const options: FindManyOptions = defaultFindOptions(req)
-    // options.where = query
-
-    return getRepository(Question).find(options)
+        .then(questions => questions.flat())
         .then(items => res.json(items))
         .catch(serverError(res))
 
