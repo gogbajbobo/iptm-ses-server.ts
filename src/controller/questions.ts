@@ -32,7 +32,7 @@ const getItems = (req: Request, res: Response): Promise<Response> => {
 }
 
 type NOfQType = Record<'section' | 'numberOfQuestions', number>[]
-function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
+const getNumberOfQuestions = (user: User, exam: Exam): NOfQType => {
 
     const userCategoryIds = user.categoryIds
     const examCategoryIds = exam.sections.map(s => s.categoryId)
@@ -53,7 +53,7 @@ function getNumberOfQuestions(user: User, exam: Exam): NOfQType {
 
 }
 
-function getQuestionsForQuiz(result: Record<'section' | 'numberOfQuestions', number>[]) {
+const getQuestionsForQuiz = (result: Record<'section' | 'numberOfQuestions', number>[]) => {
 
     const promises = result.map(r => {
 
