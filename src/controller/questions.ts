@@ -6,7 +6,8 @@ import { Exam } from '../entity/Exam'
 import { Request, Response } from 'express'
 import { FindManyOptions, getRepository } from 'typeorm'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
-import { arrayIntersect, isExaminee, isExaminer } from '../services/helper'
+import {arrayIntersect, intDivision, isExaminee, isExaminer} from '../services/helper'
+import { NUMBER_OF_QUESTIONS } from '../services/constants'
 
 const questionController = controller(Question)
 
@@ -44,9 +45,13 @@ const getQuestionsForExaminee = (req: Request, res: Response, quizId: number, us
 
                     const userCategoryIds = user.categoryIds
                     const examCategoryIds = exam.sections.map(s => s.categoryId)
-                    const categoryIds = arrayIntersect(userCategoryIds, examCategoryIds)
+                    const catIds = arrayIntersect(userCategoryIds, examCategoryIds)
+                    const sections = exam.sections.filter(s => catIds.includes(s.categoryId))
+                    const sectionIds = sections.map(s => s.id)
 
-                    return { userCategoryIds, examCategoryIds, categoryIds }
+                    const questionsInSection = intDivision(NUMBER_OF_QUESTIONS, sectionIds.length)
+
+                    return { userCategoryIds, examCategoryIds, catIds, sectionIds, questionsInSection }
 
                 })
 
