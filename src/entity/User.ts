@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany } from 'typeorm'
+import { Entity, Column, ManyToMany, RelationId } from 'typeorm'
 import { Category } from './Category'
 import { UserRole } from './UserRole'
 import { Quiz } from './Quiz'
@@ -21,6 +21,8 @@ export class User extends Datum {
         eager: true,
     })
     categories: Category[]
+    @RelationId((user: User) => user.categories)
+    categoryIds: number[]
 
     @ManyToMany(() => Quiz, quiz => quiz.examinees)
     quizzes: Quiz[]

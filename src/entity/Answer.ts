@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm'
+import { Entity, Column, ManyToOne, RelationId } from 'typeorm'
 import { Question } from './Question'
 import { Datum } from './Datum'
 
@@ -13,12 +13,11 @@ export class Answer extends Datum {
     })
     isCorrect: boolean
 
-    @Column({ nullable: true })
-    questionId: number
-
     @ManyToOne(() => Question, question => question.answers, {
         onDelete: 'CASCADE',
     })
     question: Question
+    @RelationId((answer: Answer) => answer.question)
+    questionId: number
 
 }

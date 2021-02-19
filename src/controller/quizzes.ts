@@ -1,45 +1,50 @@
 import { Quiz } from '../entity/Quiz'
 import { User } from '../entity/User'
-import { UserRole } from '../entity/UserRole'
 import { controller } from './index'
 import { Request, Response } from 'express'
 import { defaultFindOptions, rejectedClientError, serverError } from './_helper'
-import {FindManyOptions, getRepository, Raw} from 'typeorm'
+import { isExaminer, isExaminee } from '../services/helper'
+import { FindManyOptions, getRepository } from 'typeorm'
 
 const quizController = controller(Quiz)
 
 const getItems = (req: Request, res: Response): Promise<Response> => {
 
-    const quizRepository = getRepository(Quiz)
-
-    const { query } = req
     const user: User = req.user as User
 
-    if (user.roles.includes(UserRole.EXAMINER)) {
+    if (isExaminer(user))
+        return getQuizzesForExaminer(req, res)
 
-        const options: FindManyOptions = defaultFindOptions(req)
-        options.where = query
-
-        return quizRepository.find(options)
-            .then(items => res.json(items))
-            .catch(serverError(res))
-
-    }
-
-    if (user.roles.includes(UserRole.EXAMINEE)) {
-
-        return quizRepository
-            .createQueryBuilder('quiz')
-            .leftJoinAndSelect('quiz.exam', 'exam')
-            .leftJoin('quiz.examinees', 'examinee')
-            .where('examinee.id = :userId', { userId: user.id })
-            .getMany()
-            .then(items => res.json(items))
-            .catch(err => res.status(500).json({ error: err.message }))
-
-    }
+    if (isExaminee(user))
+        return getQuizzesForExaminee(req, res, user)
 
     return rejectedClientError(res, 'unknown user role')
+
+}
+
+const getQuizzesForExaminer = (req: Request, res: Response): Promise<Response> => {
+
+    const options: FindManyOptions = defaultFindOptions(req)
+
+    const { query } = req
+    options.where = query
+
+    return getRepository(Quiz).find(options)
+        .then(items => res.json(items))
+        .catch(serverError(res))
+
+}
+
+const getQuizzesForExaminee = (req: Request, res: Response, user: User): Promise<Response> => {
+
+    return getRepository(Quiz)
+        .createQueryBuilder('quiz')
+        .leftJoinAndSelect('quiz.exam', 'exam')
+        .leftJoin('quiz.examinees', 'examinee')
+        .where('examinee.id = :userId', { userId: user.id })
+        .getMany()
+        .then(items => res.json(items))
+        .catch(err => res.status(500).json({ error: err.message }))
 
 }
 

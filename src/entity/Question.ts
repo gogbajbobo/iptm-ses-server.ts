@@ -13,7 +13,6 @@ export class Question extends Datum {
         onDelete: 'CASCADE',
     })
     section: Section
-
     @RelationId((question: Question) => question.section)
     sectionId: number
 
