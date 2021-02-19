@@ -6,6 +6,7 @@ import quizzes from './quizzes'
 import questions from './questions'
 import examinees from './examinees'
 import recreateExams from './recreateExams'
+import quizAnswers from './quizAnswers'
 
 const categories = routes(`/categories`, controller(entity.Category))
 const exams = routes(`/exams`, controller(entity.Exam))
@@ -22,5 +23,6 @@ export default [
     ...quizzes,
     ...examinees,
     ...recreateExams,
+    ...quizAnswers,
 
 ]
