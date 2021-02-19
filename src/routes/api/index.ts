@@ -1,9 +1,9 @@
 import { controller } from '../../controller'
+import entity from '../../entity'
+import routes from './_helper'
 import answerController from '../../controller/answers'
 import quizzes from './quizzes'
 import questions from './questions'
-import entity from '../../entity'
-import routes from './_helper'
 import examinees from './examinees'
 import recreateExams from './recreateExams'
 
