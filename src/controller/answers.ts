@@ -37,7 +37,7 @@ const updateAnswer = (req: Request, res: Response): Promise<Response> => {
             const { questionId } = answer
 
             const options: FindManyOptions = {
-                where: { questionId, isCorrect: true }
+                where: { question: questionId, isCorrect: true }
             }
 
             return itemRepository.find(options)
