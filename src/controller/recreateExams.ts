@@ -65,8 +65,7 @@ export const recreateExams = (req: Request, res: Response): Promise<Response> =>
     const questionRepository = getRepository(Question)
     const answerRepository = getRepository(Answer)
 
-    return connection.dropDatabase()
-        .then(() => connection.synchronize())
+    return connection.synchronize(true)
         .then(() => userRepository.save(testUsers))
         .then(() => categoryRepository.save(testCategories))
         .then(() => examRepository.save(testExams))
