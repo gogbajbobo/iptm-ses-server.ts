@@ -1,0 +1,15 @@
+apps:
+  - script: /home/grimax/web/SES/server/build/app.js
+    cwd: /home/grimax/web/SES/server/
+    name: 'ses.api'
+    log_date_format: 'DD-MM-YYYY HH:mm:ss'
+    instances: 1
+    exec_mode: fork
+    watch: true
+    node_args: '--max-old-space-size=256'
+    env:
+      NODE_ENV: development
+      APP_NAME: ses.api
+    env_production:
+      NODE_ENV: production
+      APP_NAME: ses.api
