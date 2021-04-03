@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { Route } from './interfaces'
 
 import cors from './cors'
+import root from './root'
 import auth from './auth'
 import apiRoutes from './api'
 
@@ -17,6 +18,7 @@ const routeInit = (route: Route) => {
 
 const routes: Route[] = [
     ...cors,
+    ...root,
     ...auth,
     ...apiRoutes,
 ]
