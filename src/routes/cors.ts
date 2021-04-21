@@ -16,7 +16,7 @@ const corsInit = (req: Request, res: Response, next: NextFunction): RouteActionR
         const reqOrigin = req.headers['origin']
 
         if (!allowedOrigins.includes(reqOrigin))
-            return res.status(403).send()
+            return res.status(403).send(`allowedOrigins do not includes ${ reqOrigin }`)
 
         res.header('Access-Control-Allow-Origin', reqOrigin)
 
