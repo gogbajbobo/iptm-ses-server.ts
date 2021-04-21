@@ -7,6 +7,8 @@ log.info(`Allowed client origins: ${ allowedOrigins }`)
 
 const corsInit = (req: Request, res: Response, next: NextFunction): RouteActionResponse => {
 
+    log.info(`req.headers: ${ JSON.stringify(req.headers, null, '\t')}`)
+
     if (req.path === '/') {
 
         res.header('Access-Control-Allow-Origin', '*')
