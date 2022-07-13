@@ -15,7 +15,6 @@ export const invokeToken = (req: Request, msg: string): Record<string,unknown> =
         accessToken = jwt.sign(userData, config.get('jwt:secretKey')),
         message = msg || 'Token invoked successfully'
 
-
     const text = `invokeToken ${ message }: ${ JSON.stringify(user, null, '\t') }`
     log.info(text)
 
